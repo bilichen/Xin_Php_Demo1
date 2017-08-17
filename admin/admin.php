@@ -5,25 +5,25 @@
 <head>
     <title>PHP模版</title>
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <script type="text/javascript">
+        function updata(id){
+            alert(id);
+            location.href="updata.php";
+        }
+    </script>
 </head>
 <body>
 <?php require '../inc/connect_mysql.php';
 
     if($num==null){
         $num = 1;
-//        echo '$num0='.$num.'<br>';
     }
-//    echo '$num1='.$num.'<br>';
     //选择类别
-//    echo '$_GET_index='.$_GET['index'].'<br>';
     $index = isset($_GET['index'])?$_GET['index']:$num;
-//    echo '$index='.$index.'<br>';
     $num = $index;
-//    echo '$num2='.$num.'<br>';
     //选择当前类别的第几页
     $countIndex = isset($_GET['countIndex'])?$_GET['countIndex']:1;
-//    echo '$countIndex='.$countIndex;
-
+    $countIndex = ($countIndex-1)*5;
 
     $sql = 'select * from title';
     $sql1 = "select count(*) from news where new_type_id= {$index}";
@@ -32,7 +32,7 @@
     $count = ceil($row1[0]/5);
 
 
-    $sql2 = "select * from news where new_type_id= {$index} limit 0,5";
+    $sql2 = "select * from news where new_type_id= {$index} limit {$countIndex},5";
 
     $result = mysqli_query($link,$sql);
     $result2 = mysqli_query($link,$sql2);
@@ -40,7 +40,7 @@
 ?>
 
 <div class="container">
-    <a href="">添加新闻</a>
+    <a href="add.php">添加新闻</a>
     </br>
         <?php
             while($row = mysqli_fetch_assoc($result)){
@@ -59,20 +59,18 @@
                 <th>删除</th>
             </tr>
             <?php
-                $id = 1;
-                while($row2 = mysqli_fetch_assoc($result2)){
+                while($row2 = mysqli_fetch_array($result2)){
                     echo '<tr>';
-                    echo '<td>'.$id++.'</td>';
+                    echo '<td>'.$row2[0].'</td>';
                     echo '<td>'.$row2['new_type_id'].'</td>';
                     echo '<td>'.$row2['new_type_name'].'</td>';
                     echo '<td>'.$row2['new_contents'].'</td>';
-                    echo '<td><input type="button" value="修改" name="updata"/></td>';
+                    echo "<td><input type='button' value='修改' name='updata' onclick='location.href=\"updata.php?id=$row2[0]\"'   /></td>";
                     echo '<td><input type="button" value="删除" name="del"/></td>';
                     echo '</tr>';
                  }
             ?>
         </table>
-
         <div class="fool">
             <?php
                 for($i=1;$i<=$count;$i++){
