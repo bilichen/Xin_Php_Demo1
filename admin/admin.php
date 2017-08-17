@@ -5,12 +5,7 @@
 <head>
     <title>PHP模版</title>
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
-    <script type="text/javascript">
-        function updata(id){
-            alert(id);
-            location.href="updata.php";
-        }
-    </script>
+
 </head>
 <body>
 <?php require '../inc/connect_mysql.php';
@@ -66,7 +61,7 @@
                     echo '<td>'.$row2['new_type_name'].'</td>';
                     echo '<td>'.$row2['new_contents'].'</td>';
                     echo "<td><input type='button' value='修改' name='updata' onclick='location.href=\"updata.php?id=$row2[0]\"'   /></td>";
-                    echo '<td><input type="button" value="删除" name="del"/></td>';
+                    echo "<td><input type='button' value='删除' name='del'   onclick='location.href=\"del.php?id=$row2[0]\"'    /></td>";
                     echo '</tr>';
                  }
             ?>
